@@ -118,7 +118,7 @@ You now have an empty block design. The first block (or "IP") you should add is 
 
 Press the "+" button, search for the "ZYNQ7 Processing System" and press ENTER. The block should be added to the diagram.
 
-Now, click "Run Block Automation" (it should appear on a green bar in the top of the diagram). Run with the default settings, and you should get something like this:
+Now, click "Run Block Automation" (it should appear on a green bar in the top of the diagram). Run with the default settings, and you will get something like this:
 
 ![](https://github.com/duartegalvao/ArduZynq-Tutorials/raw/master/img/screen1.3.2.PNG)
 
@@ -154,7 +154,7 @@ When you click "OK", your block diagram should look like this:
 
 ![](https://github.com/duartegalvao/ArduZynq-Tutorials/raw/master/img/screen1.3.4.PNG)
 
-Since UART_0 is routed trough EMIO (which goes trough the PL, unlike MIO pins which have defined paths on the board), its port will show up on the block. You now need to connect it to the proper I/O port via the PL.
+Since UART_0 is routed trough EMIO (which goes trough the PL, unlike MIO pins which have defined paths on the device), its port will show up on the block. You now need to connect it to the proper I/O port via the PL.
 
 Right-click anywhere and select "Create Interface Port". Choose a name for it (like "UART_0"), and find the UART RTL interface. Select it and click "OK".
 
@@ -170,7 +170,7 @@ Then, on the Sources panel, right-click on the design_1 source and select "Creat
 
 ### Step 1.3.1 - Understanding the Zynq-UART Connection
 
-This HDL wrapper contains the description of the connection of the I/O ports, and it is the starting point for understanding the connection between the Zynq chip and the FTDI (the chip that handles UART communications via USB). You can open the wrapper by double-clicking on it, and there you will see the `UART_0_rxd` and `UART_0_txd` ports, for receiving and transmitting respectively:
+This VHDL wrapper contains the description of the connection of the I/O ports, and it is the starting point for understanding the connection between the Zynq chip and the FTDI FT232H (the chip that handles UART communications via USB). You can open the wrapper by double-clicking on it, and there you will see the `UART_0_rxd` and `UART_0_txd` ports, for receiving and transmitting respectively:
 
 ```vhdl
 entity design_1_wrapper is
@@ -202,7 +202,7 @@ entity design_1_wrapper is
 end design_1_wrapper;
 ```
 
-The next step is visible in the constraints. In the `_i_io.xdc` file you will the following properties:
+The list below is part of the constraints file related to the UART0. In the `_i_io.xdc` file you will find the following properties:
 
 ```
 # UART0 to FTDI
@@ -226,7 +226,7 @@ This is establishing where the pins of the chip (designated by a letter and two 
 
 Inspecting the contraints file showed that pins `H14` and `H13` are wired to the FTDI's "Transmit" and "Receive" pins respectively.
 
-This architecture is different from that of other Xilinx Zynq-7000 boards, such as Digilent's Zybo and Zedboard, in which the FTDI is wired directly to certain MIO pins (usually 48..49), which have a direct connection to the PS, rather than having to route UART via the PL.
+This architecture is different from that of other Xilinx Zynq-7000 boards, such as Digilent's Zybo and Zedboard, in which the FTDI is wired directly to certain MIO pins (usually 48..49), which have a direct connection to the PS, rather than having to route the UART via the PL.
 
 ## Step 1.4 - Generate, Synthesize, Implement and Program
 
