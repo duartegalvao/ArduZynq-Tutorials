@@ -4,7 +4,7 @@
 
 ### Motivation
 
-This starting guide is ment for people new to using Trenz ArduZynq boards, or FPGA boards in general, since the existing documentation and reference guides is not sufficient for a simple initial use from scratch.
+This starting guide is ment for people new to using Trenz ArduZynq boards, or FPGA boards in general, since the existing documentation and reference guides are not sufficient for a simple initial use from scratch.
 
 Additionally, the [board's reference design](https://wiki.trenz-electronic.de/display/PD/TE0723+Test+Board "TE0723 Reference Design") requires running scripts that aren't compatible with Vivado's latest version (2019.1 at the time of writing), which is a major drawback.
 
@@ -45,10 +45,11 @@ We will also look at how to make use of the PL.
 
 ## Table of Contents
 
- - Tutorial 1 - "Hello World" with minimal PL
+ - Tutorial 1 - "Hello World" without PL
    - Step 1.1 - Download Necessary Files
    - Step 1.2 - Launch Vivado and Create a Project
    - Step 1.3 - Set-up Block Design
+     - Step 1.3.1 - Understanding the Zynq-UART Connection
    - Step 1.4 - Generate, Synthesize, Implement and Program
    - Step 1.5 - Getting Started with SDK
    - Step 1.6 - Running your Application
@@ -163,6 +164,36 @@ To finish, click on the "Regenerate Layout" (![](img/regen.PNG)) button and then
 
 Then, on the Sources panel, right-click on the design_1 source and select "Create HDL Wrapper". Here, you can choose the option "Let Vivado manage wrapper and auto-update", for ease of use if you want to later change the block design.
 
+### Step 1.3.1 - Understanding the Zynq-UART Connection
+
+This HDL wrapper contains the description of the connection of the I/O ports, and it is the starting point for understanding the connection between the Zynq chip and the FTDI (the chip that handles UART communications via USB). You can open the wrapper by double-clicking on it, and there you will see the `UART_0_rxd` and `UART_0_txd` ports, for receiving and transmitting respectively.
+
+The next step is visible in the constraints. In the `\_i\_io.xdc` file you will the following properties:
+
+```
+# UART0 to FTDI
+set_property PACKAGE_PIN H14 [get_ports UART_0_txd]
+set_property PACKAGE_PIN H13 [get_ports UART_0_rxd]
+
+set_property PACKAGE_PIN J15 [get_ports UART_0_ctsn]
+set_property PACKAGE_PIN J14 [get_ports UART_0_rtsn]
+
+set_property PACKAGE_PIN K15 [get_ports UART_0_dsrn]
+set_property PACKAGE_PIN L15 [get_ports UART_0_dtrn]
+
+#NC: UART_0_dcdn, UART_0_ri
+set_property PACKAGE_PIN L14 [get_ports UART_0_dcdn]
+set_property PACKAGE_PIN M15 [get_ports UART_0_ri]
+
+set_property IOSTANDARD LVCMOS33 [get_ports UART_0_*]
+```
+
+This is establishing where the pins of the chip (designated by a letter and two digits; essentially a coordinate of the pin) are wired to in the board. This information only partially shown in the [board's Technical Reference Manual](https://wiki.trenz-electronic.de/display/PD/TE0723+TRM#TE0723TRM-USB2toJTAG/UARTAdapter "TE0723 Technical Reference Manual"), so it is important to look at these constraint files to understand what each pin does.
+
+From this, we learn that the pins `H14` and `H13` are wired to the FTDI's "Transmit" and "Receive" pins respectively.
+
+This is architecture is very different from that of other popular Xilinx Zynq-7000 boards, such as Digilent's Zybo and Zedboard, in which the FTDI is wired directly to certain MIO pins (usually 48..49), which have a direct connection to the PS, rather than having to route UART via the PL.
+
 ## Step 1.4 - Generate, Synthesize, Implement and Program
 
 Now we need to run trough a routine with the end goal of generating a bitstream, a map of the intended state of the PL of our FPGA chip.
@@ -270,4 +301,4 @@ The "Hello World" has successfully run on your board! It is now possible to use 
 
 # Acknowledgements
 
-To Professor Rui Duarte, for the assistance in understanding and learning to use the platform, and to Professor Horácio Neto, who wrote the equivalent tutorial for Digilent Zybo boards upon which this is based on.
+To Professor Horácio Neto, who wrote the equivalent tutorial for Digilent Zybo boards ("Hardware/Software Co-Design - Introductory Lab, Horácio Neto, February 2019") upon which this is based on, and to Professor Rui P. Duarte, for the orientation in understanding and deciphering the inner workings the platform.
