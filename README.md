@@ -4,7 +4,7 @@
 
 ### Motivation
 
-This starting guide is ment for people new to using Trenz ArduZynq boards, or FPGA boards in general, since the existing documentation and reference guides are too bloated for a simple initial use.
+This starting guide is ment for people new to using Trenz ArduZynq boards, or FPGA boards in general, since the existing documentation and reference guides is not sufficient for a simple initial use from scratch.
 
 Additionally, the [board's reference design](https://wiki.trenz-electronic.de/display/PD/TE0723+Test+Board "TE0723 Reference Design") requires running scripts that aren't compatible with Vivado's latest version (2019.1 at the time of writing), which is a major drawback.
 
@@ -57,7 +57,7 @@ We will also look at how to make use of the PL.
 
 
 
-# Tutorial 1 - "Hello World" with minimal PL
+# Tutorial 1 - "Hello World" without PL
 
 ## Step 1.1 - Download Necessary Files
 
