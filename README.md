@@ -32,9 +32,9 @@ The software used was Vivado HLS 2019.1, and it should work on any version later
 
 This board contains a Xilinx Zynq-7010 SoC ("System on Chip"). Inside, it has a dual-core ARM Cortex A9 (the PS, or "Processing System"), as well as a programmable gate array (the PL, or "Programmable Logic", which is the actual "FPGA" part).
 
-In this tutorial, we will run a "Hello World" on one of the cores of the ARM processor, using the chip's built-in RAM. The program will be loaded via JTAG and the output displayed via UART (both via the same USB port).
+In this tutorial, you will run a "Hello World" on one of the cores of the ARM processor, using the chip's built-in RAM. The program will be loaded via JTAG and the output displayed via UART (both via the same USB port).
 
-We will also look at how to make use of the PL.
+Later tutorials will also look at how to make use of the PL.
 
 ## Abbreviations
 
@@ -66,7 +66,7 @@ We will also look at how to make use of the PL.
 
 ## Step 1.1 - Download Necessary Files
 
-To create a project, first we will need to have the board files and constraints loaded onto Vivado.
+To create a project, first you will need to have the board files and constraints loaded onto Vivado.
 
 These files are available bundled with the [reference design](https://wiki.trenz-electronic.de/display/PD/TE0723+Test+Board "TE0723 Reference Design"). Be careful to download the latest version that is compatible with your Vivado version.
 
@@ -88,7 +88,7 @@ Here you can add any sources (any custom IPs you might want, for example). For t
 
 ![](https://github.com/duartegalvao/ArduZynq-Tutorials/raw/master/img/screen1.2.3.PNG)
 
-The constraints are important for this tutorial. You will need to add the constraints when working with PL (which you will later see we use to route the UART).
+The constraints are important for this tutorial. You will need to add the constraints when working with PL (which you will later see they are used to route the UART).
 
 The constraints are in the "constraints" folder of the reference design, and you can just add them all here (as shown in the screenshot).
 
@@ -126,7 +126,7 @@ Block automation basically connects automatically the most essential components.
 
 You can see that on this block there are a lot of unused ports. Ideally, these should be removed, to get it down to essentials.
 
-Double click on the PS block to open the "Re-customize IP" window. Here you can disable all the unnecessary ports.
+Double-click on the PS block to open the "Re-customize IP" window. Here you can disable all the unnecessary ports.
 
 ![](https://github.com/duartegalvao/ArduZynq-Tutorials/raw/master/img/screen1.3.3.PNG)
 
@@ -154,9 +154,9 @@ When you click "OK", your block diagram should look like this:
 
 ![](https://github.com/duartegalvao/ArduZynq-Tutorials/raw/master/img/screen1.3.4.PNG)
 
-Since UART_0 is routed trough EMIO (which goes trough the PL, unlike MIO pins which have defined paths on the board), its port will show up on the block. We now need to connect it to the proper I/O port via the PL.
+Since UART_0 is routed trough EMIO (which goes trough the PL, unlike MIO pins which have defined paths on the board), its port will show up on the block. You now need to connect it to the proper I/O port via the PL.
 
-Right click anywhere and select "Create Interface Port". Choose a name for it (like "UART_0"), and find the UART RTL interface. Select it and click "OK".
+Right-click anywhere and select "Create Interface Port". Choose a name for it (like "UART_0"), and find the UART RTL interface. Select it and click "OK".
 
 ![](https://github.com/duartegalvao/ArduZynq-Tutorials/raw/master/img/screen1.3.5.PNG)
 
@@ -170,7 +170,37 @@ Then, on the Sources panel, right-click on the design_1 source and select "Creat
 
 ### Step 1.3.1 - Understanding the Zynq-UART Connection
 
-This HDL wrapper contains the description of the connection of the I/O ports, and it is the starting point for understanding the connection between the Zynq chip and the FTDI (the chip that handles UART communications via USB). You can open the wrapper by double-clicking on it, and there you will see the `UART_0_rxd` and `UART_0_txd` ports, for receiving and transmitting respectively.
+This HDL wrapper contains the description of the connection of the I/O ports, and it is the starting point for understanding the connection between the Zynq chip and the FTDI (the chip that handles UART communications via USB). You can open the wrapper by double-clicking on it, and there you will see the `UART_0_rxd` and `UART_0_txd` ports, for receiving and transmitting respectively:
+
+```vhdl
+entity design_1_wrapper is
+  port (
+    DDR_addr : inout STD_LOGIC_VECTOR ( 14 downto 0 );
+    DDR_ba : inout STD_LOGIC_VECTOR ( 2 downto 0 );
+    DDR_cas_n : inout STD_LOGIC;
+    DDR_ck_n : inout STD_LOGIC;
+    DDR_ck_p : inout STD_LOGIC;
+    DDR_cke : inout STD_LOGIC;
+    DDR_cs_n : inout STD_LOGIC;
+    DDR_dm : inout STD_LOGIC_VECTOR ( 1 downto 0 );
+    DDR_dq : inout STD_LOGIC_VECTOR ( 15 downto 0 );
+    DDR_dqs_n : inout STD_LOGIC_VECTOR ( 1 downto 0 );
+    DDR_dqs_p : inout STD_LOGIC_VECTOR ( 1 downto 0 );
+    DDR_odt : inout STD_LOGIC;
+    DDR_ras_n : inout STD_LOGIC;
+    DDR_reset_n : inout STD_LOGIC;
+    DDR_we_n : inout STD_LOGIC;
+    FIXED_IO_ddr_vrn : inout STD_LOGIC;
+    FIXED_IO_ddr_vrp : inout STD_LOGIC;
+    FIXED_IO_mio : inout STD_LOGIC_VECTOR ( 31 downto 0 );
+    FIXED_IO_ps_clk : inout STD_LOGIC;
+    FIXED_IO_ps_porb : inout STD_LOGIC;
+    FIXED_IO_ps_srstb : inout STD_LOGIC;
+    UART_0_rxd : in STD_LOGIC;
+    UART_0_txd : out STD_LOGIC
+  );
+end design_1_wrapper;
+```
 
 The next step is visible in the constraints. In the `_i_io.xdc` file you will the following properties:
 
@@ -200,7 +230,7 @@ This architecture is different from that of other Xilinx Zynq-7000 boards, such 
 
 ## Step 1.4 - Generate, Synthesize, Implement and Program
 
-Now we need to run trough a routine with the end goal of generating a bitstream, a map of the intended state of the PL of our FPGA chip.
+Now, you need to run trough a routine with the end goal of generating a bitstream, a map of the intended state of the PL of our FPGA chip.
 
 Basically, run the following actions on the "Flow Navigator", with the default settings:
  - Generate Block Design
@@ -218,17 +248,17 @@ Now, go to "File" -> "Export" -> "Export Hardware". This will export your hardwa
 
 Then, click "File" -> "Launch SDK".
 
-On the SDK, go to "File" -> "New" -> "Board Support Package". This will create the basic software libraries you will need for your application. Make sure to select "standalone", since we want to run this on bare metal.
+On the SDK, go to "File" -> "New" -> "Board Support Package". This will create the basic software libraries you will need for your application. Make sure to select "standalone", since the application is to be run on bare metal.
 
 ![](https://github.com/duartegalvao/ArduZynq-Tutorials/raw/master/img/screen1.5.1.PNG)
 
-It will then ask for any libraries you might want to include. For now, we don't need any.
+It will then ask for any libraries you might want to include. These are not necessary for this tutorial.
 
 Once the BSP is created, you can create your application. Go to "File" -> "New" -> "Application Project", choose a name, and make sure to use the existing BSP.
 
 ![](https://github.com/duartegalvao/ArduZynq-Tutorials/raw/master/img/screen1.5.2.PNG)
 
-Then click "Next" (not "Finish"!) and choose a template. In this case, we are going for a "Hello World", which is usually the default selected. Then press "Finish".
+Then click "Next" (not "Finish"!) and choose a template. Choose the "Hello World", which is usually the default selected. Then press "Finish".
 
 ![](https://github.com/duartegalvao/ArduZynq-Tutorials/raw/master/img/screen1.5.3.PNG)
 
@@ -265,7 +295,7 @@ The "print" function being used is not from *stdio*, but rather from "xil_printf
 
 The application is complete, but before running, let's adjust some properties on the linker script. In the "Project Explorer", right-click on the application project and press "Generate a linker script".
 
-Note that all memory management here is done by you, the developer. To simplify things, we are going to use only the built-in RAM of the chip, instead of the DDR that's used by default. This is a small application, so it shouldn't be a problem.
+Note that all memory management here is done by you, the developer. To simplify this tutorial, only the built-in RAM of the chip is going to be used, instead of the DDR that is used by default. This is a small application, so it shouldn't be a problem.
 
 Select "ps7_ram_0" on all the options, and to be safe, increase the stack size to 10KB (add a zero to the end).
 
@@ -281,7 +311,7 @@ Now, let's program the FPGA. Press "Xilinx" -> "Program FPGA" and use the bitstr
 
 ![](https://github.com/duartegalvao/ArduZynq-Tutorials/raw/master/img/screen1.6.2.PNG)
 
-The Block Design we created earlier should now be programmed on the PL of the Zynq chip. All that's left is loading the application onto the chip and running it.
+The Block Design created earlier should now be programmed on the PL of the Zynq chip. All that's left is loading the application onto the chip and running it.
 
 To see the output of the program, you will need to open a terminal on your computer, connected to the serial port on which the board is connected. To do so, on the "SDK Terminal" pane (that should be on the bottom of the window), click on the "+" to add a connection to the terminal.
 
