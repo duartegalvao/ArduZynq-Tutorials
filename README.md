@@ -168,7 +168,7 @@ Then, on the Sources panel, right-click on the design_1 source and select "Creat
 
 This HDL wrapper contains the description of the connection of the I/O ports, and it is the starting point for understanding the connection between the Zynq chip and the FTDI (the chip that handles UART communications via USB). You can open the wrapper by double-clicking on it, and there you will see the `UART_0_rxd` and `UART_0_txd` ports, for receiving and transmitting respectively.
 
-The next step is visible in the constraints. In the `\_i\_io.xdc` file you will the following properties:
+The next step is visible in the constraints. In the `_i_io.xdc` file you will the following properties:
 
 ```
 # UART0 to FTDI
