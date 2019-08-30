@@ -1,5 +1,9 @@
 # Getting Started with an ArduZynq Board
 
+![](https://github.com/duartegalvao/ArduZynq-Tutorials/raw/master/img/TE0723-03M_0_600x600.jpg)
+
+*Picture source: https://shop.trenz-electronic.de/en/TE0723-03M-ArduZynq-Arduino-compatible-Xilinx-Zynq-7010-FPGA-module*
+
 ## Introduction
 
 ### Motivation
@@ -190,9 +194,9 @@ set_property IOSTANDARD LVCMOS33 [get_ports UART_0_*]
 
 This is establishing where the pins of the chip (designated by a letter and two digits; essentially a coordinate of the pin) are wired to in the board. This information only partially shown in the [board's Technical Reference Manual](https://wiki.trenz-electronic.de/display/PD/TE0723+TRM#TE0723TRM-USB2toJTAG/UARTAdapter "TE0723 Technical Reference Manual"), so it is important to look at these constraint files to understand what each pin does.
 
-From this, we learn that the pins `H14` and `H13` are wired to the FTDI's "Transmit" and "Receive" pins respectively.
+Inspecting the contraints file showed that pins `H14` and `H13` are wired to the FTDI's "Transmit" and "Receive" pins respectively.
 
-This is architecture is very different from that of other popular Xilinx Zynq-7000 boards, such as Digilent's Zybo and Zedboard, in which the FTDI is wired directly to certain MIO pins (usually 48..49), which have a direct connection to the PS, rather than having to route UART via the PL.
+This architecture is different from that of other Xilinx Zynq-7000 boards, such as Digilent's Zybo and Zedboard, in which the FTDI is wired directly to certain MIO pins (usually 48..49), which have a direct connection to the PS, rather than having to route UART via the PL.
 
 ## Step 1.4 - Generate, Synthesize, Implement and Program
 
