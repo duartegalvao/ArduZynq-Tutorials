@@ -102,7 +102,7 @@ In this case, since I am using a TE0723-03M, I will choose the TE0723_M (REV03).
 
 ![](https://github.com/duartegalvao/ArduZynq-Tutorials/raw/master/img/screen1.2.5.PNG)
 
-Now, you should be all done, and you can just click "Finish".
+Now, you can just click "Finish" to finish creating the project.
 
 ![](https://github.com/duartegalvao/ArduZynq-Tutorials/raw/master/img/screen1.2.6.PNG)
 
@@ -240,7 +240,7 @@ Basically, run the following actions on the "Flow Navigator", with the default s
 
 For the last three actions, the status of the operation will appear on the top right of your Vivado window. Wait for each to end before running the next.
 
-In the end, if everything is done right, you should have a bitstream you can program into your FPGA.
+In the end, if everything is done right, you will have a bitstream you can program into your FPGA.
 
 ## Step 1.5 - Getting Started with SDK
 
