@@ -301,4 +301,4 @@ The "Hello World" has successfully run on your board! It is now possible to use 
 
 # Acknowledgements
 
-To Professor Horácio Neto, who wrote the equivalent tutorial for Digilent Zybo boards ("Hardware/Software Co-Design - Introductory Lab, Horácio Neto, February 2019") upon which this is based on, and to Professor Rui P. Duarte, for the orientation in understanding and deciphering the inner workings the platform.
+To Professor Horácio Neto, who wrote the equivalent tutorial for Digilent Zybo boards ("Hardware/Software Co-Design - Introductory Lab, Horácio Neto, February 2019") upon which this is based on, and to Professor Rui P. Duarte, for the orientation in understanding and deciphering the inner workings of the platform.
