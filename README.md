@@ -10,11 +10,11 @@
 
 This starting guide is ment for people new to using Trenz ArduZynq boards, or FPGA boards in general, since the existing documentation and reference guides are not sufficient for a simple initial use from scratch.
 
-Additionally, the [board's reference design](https://wiki.trenz-electronic.de/display/PD/TE0723+Test+Board "TE0723 Reference Design") requires running scripts that aren't compatible with Vivado's latest version (2019.1 at the time of writing), which is a major drawback.
+Additionally, the [board's reference design](https://wiki.trenz-electronic.de/display/PD/TE0723+Test+Board "TE0723 Reference Design") requires running scripts that aren't compatible with Vivado's latest version (2019.1 at the time of writing), which is a drawback.
 
 ### Goal
 
-The goal of this tutorial is to run a simple "Hello World" on an ArduZynq board, bare metal (no OS underneath), and have its output shown on a console (via UART).
+The goal of this tutorial is to run a simple "Hello World" on an ArduZynq board, bare metal (no OS underneath), and have its output shown on a console (via UART0).
 
 ### Test Board
 
@@ -24,7 +24,7 @@ For this tutorial the following board was used:
 >
 > Vendor Part Number: TE0723-03M
 
-However, this tutorial should be applicable to any board of the TE0723 ("ArduZynq") family.
+However, this tutorial could be applicable to any board of the TE0723 ("ArduZynq") family.
 
 The software used was Vivado HLS 2019.1, and it should work on any version later than 2018.3 (or earlier, by using different board files).
 
