@@ -1,5 +1,7 @@
 # Getting Started with an ArduZynq Board
 
+[Duarte Alexandre Galvão](https://fenix.tecnico.ulisboa.pt/homepage/ist424753) (University of Lisbon - Instituto Superior Técnico)
+
 ![](https://github.com/duartegalvao/ArduZynq-Tutorials/raw/master/img/TE0723-03M_0_600x600.jpg)
 
 *Picture source: https://shop.trenz-electronic.de/en/TE0723-03M-ArduZynq-Arduino-compatible-Xilinx-Zynq-7010-FPGA-module*
